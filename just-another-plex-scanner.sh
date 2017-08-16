@@ -5,6 +5,18 @@
 # Run this with flock on cron, as often as you like.
 # Inspiration: https://github.com/ajkis/scripts/blob/master/plex/plex-scan-new.sh
 
+# check to see if script is already running, if so exit 
+if pidof -o %PPID -x "$0"; then
+   echo "$(date "+%d.%m.%Y %T") Exit, script already running." 
+   exit 1
+fi
+
+# check to see if PMS scanner is already running, if so exit
+if ps ax | grep -v grep | grep "/usr/lib/plexmediaserver/Plex Media Scanner --scan" > /dev/null
+then
+  echo "Exit, Scanner is already running" 
+  exit 
+fi
 
 echo "########### $(date "+%d.%m.%Y %T") -  Starting Just Another Plex Scanner   #########"
 
